@@ -36,20 +36,18 @@ import java.util.stream.Collectors;
 @SpringBootTest
 public class RAGTest {
     @Resource
-    private OllamaChatClient ollamaChatClient;
+    private OllamaChatClient ollamaChatClient; // 与聊天生成模型的接口，用来发送消息和获取回答
     @Resource
     private TokenTextSplitter tokenTextSplitter;
-    @Resource
-    private SimpleVectorStore simpleVectorStore;
     @Resource
     private PgVectorStore pgVectorStore;
 
     @Test
     public void upload(){
-        TikaDocumentReader reader = new TikaDocumentReader("./data/file.text");
+        TikaDocumentReader reader = new TikaDocumentReader("./data/file.text"); // 读取文件内容的工具
 
         List<Document> documents = reader.get();
-        List<Document> documentSplitterList = tokenTextSplitter.apply(documents);
+        List<Document> documentSplitterList = tokenTextSplitter.apply(documents); // 将文档拆分成更小的部分，方便存储和检索
 
         documents.forEach(doc -> doc.getMetadata().put("knowledge","知识库名称"));
         documentSplitterList.forEach(doc -> doc.getMetadata().put("knowledge","知识库名称"));
